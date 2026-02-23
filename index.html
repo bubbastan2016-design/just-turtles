@@ -1,0 +1,1527 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Just Turtles 🐢</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --ocean: #006994;
+            --sand: #f4e4c1;
+            --shell: #8fbc8f;
+            --coral: #ff6b6b;
+            --sunset: #ff8c42;
+            --deep: #1a3c40;
+            --foam: #e0f7fa;
+        }
+        
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(180deg, #87ceeb 0%, #006994 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Navigation */
+        .nav-bar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--shell), var(--ocean));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--deep);
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            background: var(--shell);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* Main Container */
+        .main-container {
+            margin-top: 80px;
+            padding: 20px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Sections */
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Home Section */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+        }
+        
+        .hero h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            margin-bottom: 20px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            opacity: 0.95;
+        }
+        
+        .turtle-emoji {
+            font-size: 5rem;
+            display: inline-block;
+            animation: swim 4s ease-in-out infinite;
+        }
+        
+        @keyframes swim {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            25% { transform: translateX(20px) rotate(5deg); }
+            75% { transform: translateX(-20px) rotate(-5deg); }
+        }
+        
+        .feature-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .feature-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8rem;
+            color: var(--deep);
+            margin-bottom: 10px;
+        }
+        
+        .feature-card p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        /* Learn Section */
+        .section-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 3rem;
+            color: white;
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        
+        .species-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .species-card {
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .species-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        .species-header {
+            padding: 20px;
+            color: white;
+            position: relative;
+        }
+        
+        .species-header.green { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+        .species-header.leatherback { background: linear-gradient(135deg, #34495e, #2c3e50); }
+        .species-header.loggerhead { background: linear-gradient(135deg, #e67e22, #d35400); }
+        .species-header.hawksbill { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+        .species-header.kemps { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .species-header.olive { background: linear-gradient(135deg, #95a5a6, #7f8c8d); }
+        .species-header.flatback { background: linear-gradient(135deg, #f39c12, #e67e22); }
+        
+        .species-header h3 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .species-body {
+            padding: 20px;
+        }
+        
+        .fact-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .fact-row:last-child {
+            border-bottom: none;
+        }
+        
+        .fact-label {
+            font-weight: 700;
+            color: #666;
+        }
+        
+        .fact-value {
+            color: var(--deep);
+            font-weight: 600;
+        }
+        
+        .expand-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--foam);
+            border: none;
+            color: var(--ocean);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .expand-btn:hover {
+            background: var(--ocean);
+            color: white;
+        }
+        
+        .species-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        .species-details.open {
+            max-height: 500px;
+        }
+        
+        .details-content {
+            padding: 20px;
+        }
+        
+        /* Games Section */
+        .games-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+        
+        .game-card {
+            background: white;
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .game-card h3 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8rem;
+            color: var(--deep);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Turtle Race Game */
+        .race-track {
+            background: linear-gradient(180deg, #87ceeb 0%, #006994 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .lane {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 10px;
+            position: relative;
+        }
+        
+        .lane-label {
+            width: 80px;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .track-path {
+            flex: 1;
+            height: 40px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 20px;
+            position: relative;
+            margin: 0 10px;
+        }
+        
+        .turtle-runner {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            transition: left 0.5s ease;
+        }
+        
+        .finish-line {
+            position: absolute;
+            right: 10px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: repeating-linear-gradient(
+                45deg,
+                #000,
+                #000 10px,
+                #fff 10px,
+                #fff 20px
+            );
+        }
+        
+        /* Memory Game */
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .memory-card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, var(--shell), var(--ocean));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        .memory-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .memory-card.flipped {
+            background: white;
+            transform: rotateY(180deg);
+        }
+        
+        .memory-card.matched {
+            background: #2ecc71;
+            animation: matchPulse 0.5s ease;
+        }
+        
+        @keyframes matchPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        /* Quiz Game */
+        .quiz-container {
+            background: #f8f9fa;
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+        
+        .quiz-question {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--deep);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .quiz-options {
+            display: grid;
+            gap: 10px;
+        }
+        
+        .quiz-option {
+            padding: 15px 20px;
+            background: white;
+            border: 3px solid #e0e0e0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            text-align: left;
+        }
+        
+        .quiz-option:hover {
+            border-color: var(--ocean);
+            transform: translateX(5px);
+        }
+        
+        .quiz-option.correct {
+            background: #2ecc71;
+            border-color: #27ae60;
+            color: white;
+        }
+        
+        .quiz-option.wrong {
+            background: #e74c3c;
+            border-color: #c0392b;
+            color: white;
+        }
+        
+        .quiz-score {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--ocean);
+            margin-top: 20px;
+        }
+        
+        /* Stories Section */
+        .stories-container {
+            display: grid;
+            gap: 30px;
+        }
+        
+        .story-card {
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @media (min-width: 768px) {
+            .story-card {
+                flex-direction: row;
+            }
+        }
+        
+        .story-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--shell), var(--ocean));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+        }
+        
+        @media (min-width: 768px) {
+            .story-image {
+                width: 300px;
+                height: auto;
+            }
+        }
+        
+        .story-content {
+            padding: 30px;
+            flex: 1;
+        }
+        
+        .story-content h3 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8rem;
+            color: var(--deep);
+            margin-bottom: 10px;
+        }
+        
+        .story-meta {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .story-text {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        
+        .read-more-btn {
+            background: linear-gradient(135deg, var(--ocean), var(--shell));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .read-more-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        /* Conservation Section */
+        .conservation-hero {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            padding: 40px;
+            border-radius: 25px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .conservation-hero h2 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .threats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .threat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .threat-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        
+        .threat-card h4 {
+            color: var(--deep);
+            margin-bottom: 10px;
+        }
+        
+        .help-section {
+            background: white;
+            border-radius: 25px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+        
+        .help-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+        
+        .help-list li {
+            padding: 15px;
+            margin: 10px 0;
+            background: #f0f9ff;
+            border-radius: 12px;
+            border-left: 4px solid var(--ocean);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .help-list li::before {
+            content: '✓';
+            background: var(--ocean);
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 10px;
+            }
+            
+            .nav-links a {
+                font-size: 0.9rem;
+                padding: 6px 12px;
+            }
+            
+            .games-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .memory-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        /* Animations */
+        .bubble {
+            position: fixed;
+            bottom: -100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: rise 15s infinite ease-in;
+            pointer-events: none;
+        }
+        
+        @keyframes rise {
+            0% {
+                bottom: -100px;
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(100px);
+            }
+            100% {
+                bottom: 100vh;
+                transform: translateX(-200px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Bubbles -->
+    <div class="bubble" style="width: 40px; height: 40px; left: 10%;"></div>
+    <div class="bubble" style="width: 20px; height: 20px; left: 20%; animation-delay: 2s;"></div>
+    <div class="bubble" style="width: 50px; height: 50px; left: 35%; animation-delay: 4s;"></div>
+    <div class="bubble" style="width: 30px; height: 30px; left: 50%; animation-delay: 6s;"></div>
+    <div class="bubble" style="width: 25px; height: 25px; left: 65%; animation-delay: 8s;"></div>
+    <div class="bubble" style="width: 45px; height: 45px; left: 80%; animation-delay: 10s;"></div>
+    <div class="bubble" style="width: 15px; height: 15px; left: 90%; animation-delay: 12s;"></div>
+
+
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <div class="logo" onclick="showSection('home')">🐢 Just Turtles</div>
+        <ul class="nav-links">
+            <li><a href="#" onclick="showSection('home')" class="nav-link active">Home</a></li>
+            <li><a href="#" onclick="showSection('learn')" class="nav-link">Learn</a></li>
+            <li><a href="#" onclick="showSection('games')" class="nav-link">Play</a></li>
+            <li><a href="#" onclick="showSection('stories')" class="nav-link">Stories</a></li>
+            <li><a href="#" onclick="showSection('help')" class="nav-link">Help Them</a></li>
+        </ul>
+    </nav>
+
+
+    <div class="main-container">
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="hero">
+                <div class="turtle-emoji">🐢</div>
+                <h1>Just Turtles</h1>
+                <p>Welcome to the wonderful world of turtles! Learn about these amazing creatures, play fun games, and discover how you can help protect them.</p>
+            </div>
+            
+            <div class="feature-cards">
+                <div class="feature-card" onclick="showSection('learn')">
+                    <div class="feature-icon">📚</div>
+                    <h3>Learn About Turtles</h3>
+                    <p>Discover the 7 species of sea turtles, their habitats, diets, and amazing facts!</p>
+                </div>
+                
+                <div class="feature-card" onclick="showSection('games')">
+                    <div class="feature-icon">🎮</div>
+                    <h3>Play Games</h3>
+                    <p>Race turtles, test your memory, and challenge your knowledge with quizzes!</p>
+                </div>
+                
+                <div class="feature-card" onclick="showSection('stories')">
+                    <div class="feature-icon">📖</div>
+                    <h3>Read Stories</h3>
+                    <p>Heartwarming tales of turtle rescues, adventures, and conservation success!</p>
+                </div>
+                
+                <div class="feature-card" onclick="showSection('help')">
+                    <div class="feature-icon">💚</div>
+                    <h3>Help Turtles</h3>
+                    <p>Learn about threats facing turtles and simple ways YOU can make a difference!</p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Learn Section -->
+        <section id="learn" class="section">
+            <h2 class="section-title">🐢 Meet the Sea Turtles</h2>
+            
+            <div class="species-grid">
+                <div class="species-card">
+                    <div class="species-header green">
+                        <h3>🥬 Green Sea Turtle</h3>
+                        <span class="status-badge">Least Concern (2025)</span>
+                    </div>
+                    <div class="species-body">
+                        <div class="fact-row">
+                            <span class="fact-label">Scientific Name</span>
+                            <span class="fact-value">Chelonia mydas</span>
+                        </div>
+                        <div class="fact-row">
+                            <span class="fact-label">Weight</span>
+                            <span class="fact-value">150-300 lbs</span>
+                        </div>
+                        <div class="fact-row">
+                            <span class="fact-label">Lifespan</span>
+                            <span class="fact-value">80+ years</span>
+                        </div>
+                        <div class="fact-row">
+                            <span class="fact-label">Diet</span>
+                            <span class="fact-value">Seagrass & Algae</span>
+                        </div>
+                    </div>
+                    <button class="expand-btn" onclick="toggleDetails(this)">Learn More ▼</button>
+                    <div class="species-details">
+                        <div class="details-content">
+                            <p><strong>Amazing Fact:</strong> Green turtles are the only herbivorous sea turtles! Their name comes from the green fat under their shell, not their shell color.</p>
+                            <p><strong>Conservation Win:</strong> In October 2025, green turtles were downlisted from Endangered to Least Concern thanks to decades of protection efforts! Their population has increased 28% since the 1970s.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="species-card">
+                    <div class="species-header leatherback">
+                        <h3>🖤 Leatherback Sea Turtle</h3>
+                        <span class="status-badge">Vulnerable</span>
+                    </div>
+                    <div class="species-body">
+                        <div class="fact-row">
+                            <span class="fact-label">Scientific Name</span>
+                            <span class="fact-value">Dermochelys coriacea</span>
+                        </div>
+                        <div class="fact-row">
+                            <span class="fact-label">Weight</span>
+                            <span class="fact-value">Up to 2,000 lbs</span>
+                        </div>
+                        <div class="fact-row">
+                            <span class="fact-label">Length</span>
+                            <span class="fact-value">Up to 6 feet</span>
+                        </div>
+                        <div class="fact-row">
+                            <span class="fact-label">Diet</span>
+                            <span class="fact-value">Jellyfish</span>
+                        </div>
+                    </div>
+                    <button class="expand-btn" onclick="toggleDetails(this)">Learn More ▼</button>
+                    <div class="species-details">
+                        <div class="details-content">
+                            <p><strong>Amazing Fact:</strong> Leatherbacks are the largest turtles on Earth! They can dive deeper than 4,000 feet - deeper than any other turtle!</p>
+                            <p><strong>Unique Feature:</strong> They don't have a hard shell - instead they have a leathery carapace with ridges!</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="species-card">
+                    <div class="species-header loggerhead">
+                        <h3>🧡 Loggerhead Sea Turtle</h3>
+                        <span class="status-badge">Vulnerable</span>
+                    </div>
+                    <div class="species-body">
+                        <div class="fact-row">
+                            <span class="fact-label">Scientific Name</span>
+                            <span class="fact-value">Caretta caretta</span>
+                        </div>
+                        <div class="fact-row">
+                            <span class="fact-label">Weight</span>
+                            <span class="fact-value">200-350 lbs</span>
+                        </div>
+                        <div class="fact-row">
+                            <span class="fact-label">Shell Length</span>
+                            <span class="fact-value">Up to 4 feet</span>
+                        </div>
+                        <div class="fact-row">
+                            <span class="fact-label">Diet</span>
+                            <span class="fact-value">Crustaceans & Conch</span>
+                        </div>
+                    </div>
+                    <button class="expand-btn" onclick="toggleDetails(this)">Learn More ▼</button>
+                    <div class="species-details">
+                        <div class="details-content">
+                            <p><strong>Amazing Fact:</strong> Loggerheads have powerful jaws that can crush hard-shelled prey like queen conchs!</p>
+                            <p><strong>Migration:</strong> They travel thousands of miles across ocean basins during their lives!</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="species-card">
+                    <div class="species-header hawksbill">
+                        <h3>💜 Hawksbill Sea Turtle</h3>
+                        <span class="status-badge">Critically Endangered</span>
+                    </div>
+                    <div class="species-body">
+                        <div class="fact-row">
+                            <span class="fact-label">Scientific Name</span>
+                            <span class="fact-value">Eretmochelys imbricata</span>
+                        </div>
+                        <div class="fact-row">
+                            <span class="fact-label">Weight</span>
+                            <span class="fact-value">100-150 lbs</span>
+                        </div>
+                        <div class="fact-row">
+                            <span class="fact-label">Shell</span>
+                            <span class="fact-value">Beautiful pattern</span>
+                        </div>
+                        <div class="fact-row">
+                            <span class="fact-label">Diet</span>
+                            <span class="fact-value">Sea Sponges</span>
+                        </div>
+                    </div>
+                    <button class="expand-btn" onclick="toggleDetails(this)">Learn More ▼</button>
+                    <div class="species-details">
+                        <div class="details-content">
+                            <p><strong>Amazing Fact:</strong> Hawksbills have a sharp, pointed beak like a hawk - that's how they got their name!</p>
+                            <p><strong>Threat:</strong> Their beautiful shells were used for tortoiseshell jewelry, causing population decline. Only about 57,000 remain.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="species-card">
+                    <div class="species-header kemps">
+                        <h3>❤️ Kemp's Ridley</h3>
+                        <span class="status-badge">Critically Endangered</span>
+                    </div>
+                    <div class="species-body">
+                        <div class="fact-row">
+                            <span class="fact-label">Scientific Name</span>
+                            <span class="fact-value">Lepidochelys kempii</span>
+                        </div>
+                        <div class="fact-row">
+                            <span class="fact-label">Weight</span>
+                            <span class="fact-value">80-100 lbs</span>
+                        </div>
+                        <div class="fact-row">
+                            <span class="fact-label">Size</span>
+                            <span class="fact-value">Smallest sea turtle</span>
+                        </div>
+                        <div class="fact-row">
+                            <span class="fact-label">Diet</span>
+                            <span class="fact-value">Blue Crabs</span>
+                        </div>
+                    </div>
+                    <button class="expand-btn" onclick="toggleDetails(this)">Learn More ▼</button>
+                    <div class="species-details">
+                        <div class="details-content">
+                            <p><strong>Amazing Fact:</strong> Kemp's ridleys are the smallest and rarest sea turtles! Only about 10,000 remain.</p>
+                            <p><strong>Nesting:</strong> They nest in large groups called "arribadas" - hundreds come ashore together!</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="species-card">
+                    <div class="species-header olive">
+                        <h3>🤍 Olive Ridley</h3>
+                        <span class="status-badge">Vulnerable</span>
+                    </div>
+                    <div class="species-body">
+                        <div class="fact-row">
+                            <span class="fact-label">Scientific Name</span>
+                            <span class="fact-value">Lepidochelys olivacea</span>
+                        </div>
+                        <div class="fact-row">
+                            <span class="fact-label">Weight</span>
+                            <span class="fact-value">80-100 lbs</span>
+                        </div>
+                        <div class="fact-row">
+                            <span class="fact-label">Abundance</span>
+                            <span class="fact-value">Most abundant</span>
+                        </div>
+                        <div class="fact-row">
+                            <span class="fact-label">Diet</span>
+                            <span class="fact-value">Fish & Invertebrates</span>
+                        </div>
+                    </div>
+                    <button class="expand-btn" onclick="toggleDetails(this)">Learn More ▼</button>
+                    <div class="species-details">
+                        <div class="details-content">
+                            <p><strong>Amazing Fact:</strong> Olive ridleys are the most abundant sea turtle species!</p>
+                            <p><strong>Arribadas:</strong> Like Kemp's ridleys, they nest in spectacular mass nesting events with thousands of turtles!</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="species-card">
+                    <div class="species-header flatback">
+                        <h3>💛 Flatback Sea Turtle</h3>
+                        <span class="status-badge">Data Deficient</span>
+                    </div>
+                    <div class="species-body">
+                        <div class="fact-row">
+                            <span class="fact-label">Scientific Name</span>
+                            <span class="fact-value">Natator depressus</span>
+                        </div>
+                        <div class="fact-row">
+                            <span class="fact-label">Weight</span>
+                            <span class="fact-value">200 lbs</span>
+                        </div>
+                        <div class="fact-row">
+                            <span class="fact-label">Range</span>
+                            <span class="fact-value">Australia only</span>
+                        </div>
+                        <div class="fact-row">
+                            <span class="fact-label">Diet</span>
+                            <span class="fact-value">Soft-bodied prey</span>
+                        </div>
+                    </div>
+                    <button class="expand-btn" onclick="toggleDetails(this)">Learn More ▼</button>
+                    <div class="species-details">
+                        <div class="details-content">
+                            <p><strong>Amazing Fact:</strong> Flatbacks are the only sea turtle species that lives entirely in Australian waters!</p>
+                            <p><strong>Shell:</strong> They have a flat, olive-gray shell that gives them their name!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background: #e8f5e9; padding: 30px; border-radius: 20px; margin-top: 40px;">
+                <h3 style="font-family: 'Fredoka', sans-serif; font-size: 1.8rem; color: var(--deep); margin-bottom: 20px;">🧠 Did You Know?</h3>
+                <ul style="list-style: none; font-size: 1.1rem; line-height: 2;">
+                    <li>🌡️ <strong>Temperature decides gender:</strong> Warmer nests produce female turtles, cooler nests produce males!</li>
+                    <li>🧭 <strong>Natural GPS:</strong> Sea turtles can sense Earth's magnetic field to navigate across oceans!</li>
+                    <li>😴 <strong>Underwater naps:</strong> Sea turtles can hold their breath for up to 5 hours while resting!</li>
+                    <li>🥚 <strong>Many eggs:</strong> Females lay thousands of eggs in their lifetime, but only 1 in 1,000 hatchlings survives to adulthood!</li>
+                    <li>🦕 <strong>Dino buddies:</strong> Turtles shared the Earth with dinosaurs over 100 million years ago!</li>
+                    <li>🐢 <strong>Shell facts:</strong> A turtle's shell is made of over 50 bones fused together - they're literally wearing their bones on the outside!</li>
+                </ul>
+            </div>
+        </section>
+
+
+        <!-- Games Section -->
+        <section id="games" class="section">
+            <h2 class="section-title">🎮 Turtle Games</h2>
+            
+            <div class="games-container">
+                <!-- Turtle Race -->
+                <div class="game-card">
+                    <h3>🏁 Turtle Race</h3>
+                    <p>Click the button to race your turtle to the finish line!</p>
+                    <div class="race-track" id="raceTrack">
+                        <div class="lane">
+                            <span class="lane-label">Speedy</span>
+                            <div class="track-path">
+                                <div class="turtle-runner" id="turtle1">🐢</div>
+                                <div class="finish-line"></div>
+                            </div>
+                        </div>
+                        <div class="lane">
+                            <span class="lane-label">Shelly</span>
+                            <div class="track-path">
+                                <div class="turtle-runner" id="turtle2">🐢</div>
+                                <div class="finish-line"></div>
+                            </div>
+                        </div>
+                        <div class="lane">
+                            <span class="lane-label">Flash</span>
+                            <div class="track-path">
+                                <div class="turtle-runner" id="turtle3">🐢</div>
+                                <div class="finish-line"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="startRace()" style="width: 100%; padding: 15px; font-size: 1.2rem; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 700;">Start Race!</button>
+                    <div id="raceResult" style="text-align: center; margin-top: 15px; font-weight: 700; color: var(--deep);"></div>
+                </div>
+
+
+                <!-- Memory Game -->
+                <div class="game-card">
+                    <h3>🧠 Turtle Memory</h3>
+                    <p>Match the turtle pairs! Find all matches to win!</p>
+                    <div class="memory-grid" id="memoryGrid"></div>
+                    <div style="text-align: center; margin-top: 15px;">
+                        <span id="moves" style="font-weight: 700; color: var(--deep);">Moves: 0</span>
+                        <button onclick="initMemoryGame()" style="margin-left: 20px; padding: 10px 20px; background: var(--shell); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">New Game</button>
+                    </div>
+                </div>
+
+
+                <!-- Quiz Game -->
+                <div class="game-card" style="grid-column: 1 / -1;">
+                    <h3>🎯 Turtle Trivia Challenge</h3>
+                    <p>Test your turtle knowledge with these fin-tastic questions!</p>
+                    <div class="quiz-container" id="quizContainer">
+                        <div class="quiz-question" id="quizQuestion">Loading question...</div>
+                        <div class="quiz-options" id="quizOptions"></div>
+                        <div class="quiz-score" id="quizScore">Score: 0/0</div>
+                        <button onclick="nextQuestion()" id="nextBtn" style="display: none; margin-top: 20px; width: 100%; padding: 12px; background: var(--ocean); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 700;">Next Question →</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Stories Section -->
+        <section id="stories" class="section">
+            <h2 class="section-title">📖 Turtle Tales</h2>
+            
+            <div class="stories-container">
+                <div class="story-card">
+                    <div class="story-image">🌊</div>
+                    <div class="story-content">
+                        <h3>The Journey of Hope</h3>
+                        <div class="story-meta">A true story of resilience • 5 min read</div>
+                        <div class="story-text">
+                            In 2023, a tiny Kemp's ridley turtle named Hope was found stranded on a cold beach in Massachusetts. She was barely alive, covered in algae, and had a cracked shell. But a team of dedicated rescuers refused to give up on her...
+                        </div>
+                        <button class="read-more-btn" onclick="showFullStory('hope')">Read Full Story</button>
+                    </div>
+                </div>
+
+
+                <div class="story-card">
+                    <div class="story-image">🏝️</div>
+                    <div class="story-content">
+                        <h3>The Great Arribada</h3>
+                        <div class="story-meta">Nature's miracle • 4 min read</div>
+                        <div class="story-text">
+                            Every year, on a remote beach in Costa Rica, something magical happens. As the moon rises full and bright over the Pacific, thousands of olive ridley sea turtles begin to emerge from the ocean...
+                        </div>
+                        <button class="read-more-btn" onclick="showFullStory('arribada')">Read Full Story</button>
+                    </div>
+                </div>
+
+
+                <div class="story-card">
+                    <div class="story-image">🦸</div>
+                    <div class="story-content">
+                        <h3>Super Turtle to the Rescue</h3>
+                        <div class="story-meta">Adventure story • 6 min read</div>
+                        <div class="story-text">
+                            Shelly wasn't like other green sea turtles. While her brothers and sisters spent their days munching on seagrass, Shelly dreamed of adventure. Little did she know, her courage would soon be tested...
+                        </div>
+                        <button class="read-more-btn" onclick="showFullStory('super')">Read Full Story</button>
+                    </div>
+                </div>
+
+
+                <div class="story-card">
+                    <div class="story-image">🎉</div>
+                    <div class="story-content">
+                        <h3>From Endangered to Thriving</h3>
+                        <div class="story-meta">Conservation success • 3 min read</div>
+                        <div class="story-text">
+                            In 2025, scientists announced incredible news: the green sea turtle was no longer endangered! This is the story of how people around the world came together to save a species...
+                        </div>
+                        <button class="read-more-btn" onclick="showFullStory('success')">Read Full Story</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Help Section -->
+        <section id="help" class="section">
+            <div class="conservation-hero">
+                <h2>💚 Be a Turtle Hero!</h2>
+                <p>Sea turtles have survived for over 100 million years, but now they need our help. Here's how YOU can make a difference!</p>
+            </div>
+
+
+            <h3 style="color: white; text-align: center; font-size: 1.8rem; margin-bottom: 20px; text-shadow: 0 2px 10px rgba(0,0,0,0.3);">Threats Turtles Face</h3>
+            
+            <div class="threats-grid">
+                <div class="threat-card">
+                    <div class="threat-icon">🎣</div>
+                    <h4>Bycatch</h4>
+                    <p>Turtles get caught in fishing nets and hooks meant for other fish. Over 250,000 sea turtles are accidentally caught each year!</p>
+                </div>
+                
+                <div class="threat-card">
+                    <div class="threat-icon">🏖️</div>
+                    <h4>Beach Development</h4>
+                    <p>Hotels and lights on beaches confuse hatchlings. They need dark, quiet beaches to find their way to the ocean!</p>
+                </div>
+                
+                <div class="threat-card">
+                    <div class="threat-icon">🥤</div>
+                    <h4>Plastic Pollution</h4>
+                    <p>Turtles mistake plastic bags for jellyfish and eat them. This can make them very sick or even kill them.</p>
+                </div>
+                
+                <div class="threat-card">
+                    <div class="threat-icon">🌡️</div>
+                    <h4>Climate Change</h4>
+                    <p>Warmer sand produces more female turtles. We need balance! Rising seas also wash away nesting beaches.</p>
+                </div>
+            </div>
+
+
+            <div class="help-section">
+                <h3 style="font-family: 'Fredoka', sans-serif; font-size: 2rem; color: var(--deep); margin-bottom: 10px;">🌟 Simple Ways to Help</h3>
+                <p style="color: #666; margin-bottom: 20px;">Every small action counts! Here's what YOU can do:</p>
+                
+                <ul class="help-list">
+                    <li><strong>Reduce Plastic Use</strong> - Say no to plastic bags, straws, and bottles. Use reusable items instead!</li>
+                    <li><strong>Clean Up Beaches</strong> - Join or organize beach cleanups. Remove trash before it reaches the ocean!</li>
+                    <li><strong>Turn Off Lights</strong> - If you live near the beach, turn off outdoor lights during nesting season (May-October).</li>
+                    <li><strong>Give Turtles Space</strong> - If you see a nesting turtle, stay back and quiet. Flash photography and loud noises scare them!</li>
+                    <li><strong>Spread the Word</strong> - Tell your friends and family about turtles and why they need protection!</li>
+                    <li><strong>Support Conservation</strong> - Donate to turtle rescue organizations or symbolically adopt a sea turtle!</li>
+                    <li><strong>Be a Responsible Boater</strong> - Watch for turtles in the water and slow down in turtle zones!</li>
+                    <li><strong>Don't Buy Shell Products</strong> - Never buy tortoiseshell jewelry or items - it's illegal and hurts hawksbill turtles!</li>
+                </ul>
+            </div>
+
+
+            <div style="background: linear-gradient(135deg, #ffeaa7, #fdcb6e); border-radius: 20px; padding: 30px; margin-top: 30px; text-align: center;">
+                <h3 style="font-family: 'Fredoka', sans-serif; font-size: 1.8rem; color: var(--deep); margin-bottom: 15px;">🐢 Remember!</h3>
+                <p style="font-size: 1.2rem; color: var(--deep); font-weight: 600;">Only 1 in 1,000 sea turtle hatchlings survive to adulthood. Every turtle counts, and every action you take makes a difference!</p>
+            </div>
+        </section>
+    </div>
+
+
+    <script>
+        // Navigation
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            window.scrollTo(0, 0);
+        }
+
+
+        // Learn Section - Toggle Details
+        function toggleDetails(btn) {
+            const details = btn.nextElementSibling;
+            details.classList.toggle('open');
+            btn.textContent = details.classList.contains('open') ? 'Show Less ▲' : 'Learn More ▼';
+        }
+
+
+        // Turtle Race Game
+        function startRace() {
+            const turtles = [
+                document.getElementById('turtle1'),
+                document.getElementById('turtle2'),
+                document.getElementById('turtle3')
+            ];
+            const names = ['Speedy', 'Shelly', 'Flash'];
+            
+            turtles.forEach(t => t.style.left = '0');
+            document.getElementById('raceResult').textContent = 'Race in progress...';
+            
+            let finished = [];
+            
+            turtles.forEach((turtle, index) => {
+                let progress = 0;
+                const speed = 2 + Math.random() * 3;
+                
+                const interval = setInterval(() => {
+                    progress += speed + (Math.random() * 2 - 1);
+                    if (progress >= 85) {
+                        progress = 85;
+                        clearInterval(interval);
+                        finished.push(names[index]);
+                        
+                        if (finished.length === 1) {
+                            document.getElementById('raceResult').textContent = `🏆 ${names[index]} wins!`;
+                            document.getElementById('raceResult').style.color = '#27ae60';
+                        }
+                    }
+                    turtle.style.left = progress + '%';
+                }, 100);
+            });
+        }
+
+
+        // Memory Game
+        let memoryCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let moves = 0;
+
+
+        function initMemoryGame() {
+            const grid = document.getElementById('memoryGrid');
+            const emojis = ['🐢', '🐢', '🌊', '🌊', '🏖️', '🏖️', '🐚', '🐚', '🦀', '🦀', '🐠', '🐠'];
+            
+            // Shuffle
+            emojis.sort(() => Math.random() - 0.5);
+            
+            grid.innerHTML = '';
+            memoryCards = [];
+            flippedCards = [];
+            matchedPairs = 0;
+            moves = 0;
+            document.getElementById('moves').textContent = 'Moves: 0';
+            
+            emojis.forEach((emoji, index) => {
+                const card = document.createElement('div');
+                card.className = 'memory-card';
+                card.dataset.emoji = emoji;
+                card.dataset.index = index;
+                card.textContent = '?';
+                card.onclick = () => flipCard(card);
+                grid.appendChild(card);
+                memoryCards.push(card);
+            });
+        }
+
+
+        function flipCard(card) {
+            if (card.classList.contains('flipped') || card.classList.contains('matched') || flippedCards.length >= 2) return;
+            
+            card.classList.add('flipped');
+            card.textContent = card.dataset.emoji;
+            flippedCards.push(card);
+            
+            if (flippedCards.length === 2) {
+                moves++;
+                document.getElementById('moves').textContent = `Moves: ${moves}`;
+                
+                if (flippedCards[0].dataset.emoji === flippedCards[1].dataset.emoji) {
+                    flippedCards.forEach(c => c.classList.add('matched'));
+                    matchedPairs++;
+                    flippedCards = [];
+                    
+                    if (matchedPairs === 6) {
+                        setTimeout(() => {
+                            alert(`🎉 Congratulations! You won in ${moves} moves!`);
+                        }, 500);
+                    }
+                } else {
+                    setTimeout(() => {
+                        flippedCards.forEach(c => {
+                            c.classList.remove('flipped');
+                            c.textContent = '?';
+                        });
+                        flippedCards = [];
+                    }, 1000);
+                }
+            }
+        }
+
+
+        // Quiz Game
+        const quizQuestions = [
+            {
+                question: "How many species of sea turtles are there?",
+                options: ["5", "7", "10", "12"],
+                correct: 1
+            },
+            {
+                question: "What do green sea turtles primarily eat?",
+                options: ["Fish", "Jellyfish", "Seagrass and algae", "Crabs"],
+                correct: 2
+            },
+            {
+                question: "Which is the largest sea turtle species?",
+                options: ["Green turtle", "Loggerhead", "Leatherback", "Hawksbill"],
+                correct: 2
+            },
+            {
+                question: "How long can sea turtles live?",
+                options: ["20-30 years", "50-60 years", "80+ years", "100+ years"],
+                correct: 2
+            },
+            {
+                question: "What determines a sea turtle's gender?",
+                options: ["Genetics", "Sand temperature", "Moon phase", "Ocean currents"],
+                correct: 1
+            },
+            {
+                question: "How many hatchlings survive to adulthood?",
+                options: ["1 in 10", "1 in 100", "1 in 1,000", "1 in 10,000"],
+                correct: 2
+            },
+            {
+                question: "Which sea turtle is critically endangered due to tortoiseshell trade?",
+                options: ["Green turtle", "Hawksbill", "Olive ridley", "Flatback"],
+                correct: 1
+            },
+            {
+                question: "What is the smallest sea turtle species?",
+                options: ["Kemp's ridley", "Olive ridley", "Flatback", "Hawksbill"],
+                correct: 0
+            }
+        ];
+
+
+        let currentQuestion = 0;
+        let quizScore = 0;
+        let answered = false;
+
+
+        function loadQuestion() {
+            if (currentQuestion >= quizQuestions.length) {
+                document.getElementById('quizQuestion').textContent = `🎉 Quiz Complete! You scored ${quizScore}/${quizQuestions.length}!`;
+                document.getElementById('quizOptions').innerHTML = '';
+                document.getElementById('nextBtn').style.display = 'none';
+                document.getElementById('quizScore').textContent = `Final Score: ${quizScore}/${quizQuestions.length}`;
+                return;
+            }
+            
+            const q = quizQuestions[currentQuestion];
+            document.getElementById('quizQuestion').textContent = `Question ${currentQuestion + 1}: ${q.question}`;
+            
+            const optionsDiv = document.getElementById('quizOptions');
+            optionsDiv.innerHTML = '';
+            
+            q.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-option';
+                btn.textContent = option;
+                btn.onclick = () => selectAnswer(index);
+                optionsDiv.appendChild(btn);
+            });
+            
+            answered = false;
+            document.getElementById('nextBtn').style.display = 'none';
+            document.getElementById('quizScore').textContent = `Score: ${quizScore}/${currentQuestion}`;
+        }
+
+
+        function selectAnswer(index) {
+            if (answered) return;
+            answered = true;
+            
+            const q = quizQuestions[currentQuestion];
+            const options = document.querySelectorAll('.quiz-option');
+            
+            if (index === q.correct) {
+                options[index].classList.add('correct');
+                quizScore++;
+            } else {
+                options[index].classList.add('wrong');
+                options[q.correct].classList.add('correct');
+            }
+            
+            document.getElementById('quizScore').textContent = `Score: ${quizScore}/${currentQuestion + 1}`;
+            document.getElementById('nextBtn').style.display = 'block';
+        }
+
+
+        function nextQuestion() {
+            currentQuestion++;
+            loadQuestion();
+        }
+
+
+        // Stories
+        function showFullStory(storyId) {
+            const stories = {
+                hope: `The Journey of Hope - Full Story
+
+
+In the early morning hours of November 15, 2023, a volunteer walking along a Massachusetts beach discovered something heartbreaking: a tiny Kemp's ridley turtle, barely larger than a dinner plate, struggling in the cold sand. The turtle, later named Hope, was hypothermic, covered in algae, and had a cracked shell from a boat strike.
+
+
+The New England Aquarium's rescue team rushed to the scene. They found Hope's body temperature was dangerously low - just 45°F. "She was barely breathing," recalled rescue coordinator Sarah. "Most turtles in this condition don't survive."
+
+
+But Hope was a fighter. Over the next eight months, she underwent surgery, received antibiotics, and slowly regained her strength. Children from local schools followed her progress online, sending her get-well cards and drawings.
+
+
+On July 3, 2024, a healthy Hope was released back into the warm waters of Cape Cod Bay. As she swam into the blue depths, the rescue team cheered. "Every turtle saved is a victory for the species," Sarah said. "Hope represents why we never give up."
+
+
+Today, Hope's satellite tracker shows she's thriving, having traveled over 1,000 miles. Her story reminds us that with care and determination, we can make a difference - one turtle at a time.`,
+
+
+                arribada: `The Great Arribada - Full Story
+
+
+Ostional Beach, Costa Rica. The moon is full, casting a silver path across the Pacific Ocean. Something ancient is about to begin.
+
+
+At first, it's just a dark shape in the surf. Then another. And another. Within minutes, thousands of olive ridley sea turtles are emerging from the ocean, their prehistoric bodies heaving onto the sandy beach. This is an arribada - one of nature's most spectacular events.
+
+
+For Maria, a local conservationist who has watched arribadas for 30 years, the magic never fades. "It's like the beach is alive," she whispers. "The sand moves with turtles."
+
+
+Each female digs a hole with her flippers, lays about 100 eggs, covers the nest, and returns to the sea - all in about 45 minutes. During a major arribada, up to 500,000 turtles may nest over several nights.
+
+
+The eggs incubate for about 50 days. Then, under the cover of darkness, thousands of hatchlings emerge simultaneously and race to the ocean. It's a dangerous journey - birds, crabs, and fish wait to prey on the babies. Only the strongest survive.
+
+
+"It's nature's way," Maria says. "The mothers lay so many eggs because the odds are so tough. But those who survive will return to this same beach to nest someday."
+
+
+The arribada reminds us of nature's cycles - ancient, mysterious, and worth protecting.`,
+
+
+                super: `Super Turtle to the Rescue - Full Story
+
+
+Shelly was different. While her brothers and sisters were content to munch on seagrass in the peaceful lagoon, Shelly dreamed of adventure. She practiced swimming fast. She explored caves. She even learned to recognize human boats.
+
+
+"You're going to get yourself in trouble," her mother warned. But Shelly just smiled and dove deeper.
+
+
+One day, while exploring near the reef, Shelly heard a cry for help. A young hawksbill turtle was trapped in a discarded fishing net, struggling to reach the surface for air.
+
+
+Without hesitation, Shelly charged forward. Using her strong beak, she attacked the net, tearing strand after strand. The mesh was strong, cutting into her skin, but she didn't stop. Finally, with one mighty pull, she freed the hawksbill.
+
+
+"Thank you!" gasped the young turtle. "I thought I was going to drown!"
+
+
+Word of Shelly's bravery spread through the ocean. Soon, she was organizing a team of "Rescue Turtles" who patrolled the waters, freeing trapped animals and removing trash. They saved over 100 creatures that year.
+
+
+Shelly proved that one turtle - even a small one - can make a big difference. And she learned that true adventure isn't about seeking danger, but about helping others.
+
+
+"Maybe I'm not so different after all," Shelly thought, as she led her team on another patrol. "I'm just a turtle who cares."
+
+
+And that made her super indeed.`,
+
+
+                success: `From Endangered to Thriving - Full Story
+
+
+In 1982, scientists made a devastating announcement: the green sea turtle was officially endangered. Decades of hunting for meat and eggs, plus habitat destruction, had reduced populations by over 60%.
+
+
+But people refused to let this ancient species disappear.
+
+
+In Florida, volunteers began patrolling beaches at night, protecting nests from poachers. In Costa Rica, former egg collectors became conservationists, paid to guard nests instead of raid them. In Hawaii, fishing regulations protected turtle feeding grounds.
+
+
+Turtle Excluder Devices (TEDs) were invented - special nets that let turtles escape while keeping shrimp. Though fishermen initially resisted, TEDs proved effective and saved thousands of turtles yearly.
+
+
+Schoolchildren raised money for turtle research. Tourists paid to see nesting turtles, creating economic incentives for protection. Laws banned the sale of turtle products worldwide.
+
+
+Slowly, numbers began to rise. In Florida, green turtle nests increased from just 464 in 1989 to over 77,000 in 2023 - a 16,000% increase!
+
+
+In October 2025, the International Union for Conservation of Nature announced the incredible news: green sea turtles were downlisted from Endangered to Least Concern. The global population had increased 28% since the 1970s.
+
+
+"This is what happens when we work together," said Dr. Rodriguez, a turtle biologist for 40 years, with tears in her eyes. "We can save species. We just have to care enough to try."
+
+
+The green turtle's recovery proves that conservation works. But the work isn't done - other species like hawksbills and Kemp's ridleys still need help. The green turtle's story is a reminder that every action counts, and it's never too late to make a difference.`
+            };
+            
+            alert(stories[storyId]);
+        }
+
+
+        // Initialize
+        window.onload = function() {
+            initMemoryGame();
+            loadQuestion();
+        };
+    </script>
+</body>
+</html>
